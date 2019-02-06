@@ -1,0 +1,32 @@
+{
+  "name": "ipld-graphviz",
+  "version": "0.1.0",
+  "description": "Visualise your IPLD DAG with Graphviz",
+  "main": "src/index.js",
+  "dependencies": {
+    "cids": "^0.5.7",
+    "ipfs-block-service": "^0.15.2",
+    "ipfs-repo": "^0.26.1",
+    "ipld": "^0.21.1",
+    "recursive-iterator": "^3.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmx/ipld-graphviz.git"
+  },
+  "keywords": [
+    "IPLD",
+    "DAG",
+    "Graphviz"
+  ],
+  "author": "Volker Mische <volker.mische@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vmx/ipld-graphviz/issues"
+  },
+  "homepage": "https://github.com/vmx/ipld-graphviz#readme"
+}
