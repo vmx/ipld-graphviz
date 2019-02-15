@@ -8,13 +8,23 @@ const getRelations = require('./get-relations.js')
 const utils = require('./utils.js')
 
 const processRelations = async (ipld, relations, processFun) => {
+  const labels = {}
+  const outputRelations = []
   for await (const cids of relations) {
     const [baseNode, linkedNode] = await ipld.get(cids).all()
-    //console.log(baseNode, linkedNode)
-    //console.log(cids)
     const baseOutput = processFun(cids[0], baseNode)
     const linkedOutput = processFun(cids[1], linkedNode)
-    console.log(baseOutput, '->', linkedOutput)
+    const baseOutputAscii = baseOutput.replace(/[^a-zA-Z0-9]/g, '')
+    const linkedOutputAscii = linkedOutput.replace(/[^a-zA-Z0-9]/g, '')
+    labels[baseOutputAscii] = baseOutput
+    labels[linkedOutputAscii] = linkedOutput
+    outputRelations.push(`${baseOutputAscii} -> ${linkedOutputAscii}`)
+  }
+  for (const [node, label] of Object.entries(labels)) {
+    console.log(`${node}[label="${label}"]`)
+  }
+  for (const line of outputRelations) {
+    console.log(line)
   }
 }
 
