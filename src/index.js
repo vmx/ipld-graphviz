@@ -8,8 +8,10 @@ const getRelations = require('./get-relations.js')
 const utils = require('./utils.js')
 
 const processRelations = async (ipld, relations, processFun) => {
+  // Key is the node ID, the value is the label
   const labels = {}
-  const outputRelations = []
+  // List of relations, where every object has a `source` and `target` field
+  const processedRelations = []
   for await (const cids of relations) {
     const [baseNode, linkedNode] = await ipld.getMany(cids).all()
     const baseOutput = processFun(cids[0], baseNode)
@@ -18,13 +20,14 @@ const processRelations = async (ipld, relations, processFun) => {
     const linkedOutputAscii = linkedOutput.replace(/[^a-zA-Z0-9]/g, '')
     labels[baseOutputAscii] = baseOutput
     labels[linkedOutputAscii] = linkedOutput
-    outputRelations.push(`${baseOutputAscii} -> ${linkedOutputAscii}`)
+    processedRelations.push({
+      source: baseOutputAscii,
+      target: linkedOutputAscii
+    })
   }
-  for (const [node, label] of Object.entries(labels)) {
-    console.log(`${node}[label="${label}"]`)
-  }
-  for (const line of outputRelations) {
-    console.log(line)
+  return {
+    labels,
+    relations: processedRelations
   }
 }
 
@@ -40,6 +43,18 @@ const processFun = (cid, node) => {
   }
 }
 
+const print = (labels, relations) => {
+  console.log(`digraph {
+rankdir=LR`)
+  for (const [id, label] of Object.entries(labels)) {
+    console.log(`${id}[label="${label}"]`)
+  }
+  for (const { source, target } of relations) {
+    console.log(`${source} -> ${target}`)
+  }
+  console.log('}')
+}
+
 const main = async (argv) => {
   const ipfsPath = process.env.IPFS_PATH
   if (ipfsPath === undefined) {
@@ -48,11 +63,10 @@ const main = async (argv) => {
   const rootCid = new CID(argv[2])
   const ipld = await utils.openIpld(ipfsPath)
 
-  const relations = getRelations(ipld, rootCid)
-  console.log(`digraph {
-rankdir=LR`)
-  await processRelations(ipld, relations, processFun)
-  console.log('}')
+  const rawRelations = getRelations(ipld, rootCid)
+  const { labels, relations } = await processRelations(
+    ipld, rawRelations, processFun)
+  print(labels, relations)
 }
 
 if (require.main === module) {
