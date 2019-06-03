@@ -11,7 +11,7 @@ const processRelations = async (ipld, relations, processFun) => {
   const labels = {}
   const outputRelations = []
   for await (const cids of relations) {
-    const [baseNode, linkedNode] = await ipld.get(cids).all()
+    const [baseNode, linkedNode] = await ipld.getMany(cids).all()
     const baseOutput = processFun(cids[0], baseNode)
     const linkedOutput = processFun(cids[1], linkedNode)
     const baseOutputAscii = baseOutput.replace(/[^a-zA-Z0-9]/g, '')

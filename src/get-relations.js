@@ -9,7 +9,7 @@ const utils = require('./utils.js')
 
 // Gets all CIDs a node is linking to
 const getAllCids = async function* (ipld, cid) {
-  const node = await ipld.get([cid]).first()
+  const node = await ipld.get(cid)
   for(const item of new RecursiveIterator(node)) {
     const value = item.node
     if (CID.isCID(value)) {

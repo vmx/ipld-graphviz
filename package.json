@@ -4,10 +4,10 @@
   "description": "Visualise your IPLD DAG with Graphviz",
   "main": "src/index.js",
   "dependencies": {
-    "cids": "^0.5.7",
+    "cids": "^0.7.1",
     "ipfs-block-service": "^0.15.2",
-    "ipfs-repo": "^0.26.1",
-    "ipld": "^0.21.1",
+    "ipfs-repo": "^0.26.6",
+    "ipld": "^0.24.1",
     "recursive-iterator": "^3.3.0"
   },
   "devDependencies": {},
