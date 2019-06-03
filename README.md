@@ -49,6 +49,12 @@ The output is a [Graphviz](https://graphviz.org/) file that can be converted to 
 > dot -Tsvg out.gv > out.svg
 ```
 
+### Output for Parasol/Sigma
+
+[Parasol](http://parasol.alexgirard.com/) is using the JSON format from [Sigma](http://sigmajs.org/). That format can also be produced via:
+
+IPFS_PATH=/tmp/dagbuilderrepo node src/parasoljson.js zdpuAmu84NmMhcp31RRBHEr5EEXzYziav44xbPASvB7HC2Xtb > out.json
+
 ## Contribute
 
 Feel free to join in. All welcome. Open an [issue](https://github.com/vmx/ipld-graphviz/issues)!
